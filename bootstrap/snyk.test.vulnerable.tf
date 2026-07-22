@@ -37,14 +37,14 @@ resource "azurerm_storage_account" "snyk_test" {
   location                        = var.location
   resource_group_name             = module.resource_group["state"].name
   account_tier                    = "Standard"
-  account_replication_type        = "LRS"
-  enable_https_traffic_only       = false
-  min_tls_version                 = "TLS1_0"
-  allow_nested_items_to_be_public = true
+  account_replication_type        = "GRS"
+  enable_https_traffic_only       = true
+  min_tls_version                 = "TLS1_2"
+  allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
 
   network_rules {
-    default_action = "Allow"
+    default_action = "Deny"
   }
 }
 
@@ -54,7 +54,7 @@ resource "azurerm_key_vault" "snyk_test" {
   resource_group_name         = module.resource_group["state"].name
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   sku_name                    = "standard"
-  purge_protection_enabled    = false
+  purge_protection_enabled    = true
   enable_rbac_authorization   = true
 
   network_acls {
